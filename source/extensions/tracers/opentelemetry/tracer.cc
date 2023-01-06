@@ -136,6 +136,8 @@ void Tracer::flushSpans() {
       // TODO: should there be any sort of retry or reporting here?
       ENVOY_LOG(trace, "Unsuccessful log request to OpenTelemetry trace collector.");
     }
+  } else {
+    ENVOY_LOG(info, "Skipping log request to OpenTelemetry: no exporter configured");
   }
   span_buffer_.clear();
 }
