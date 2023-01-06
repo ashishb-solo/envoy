@@ -130,8 +130,8 @@ void Tracer::flushSpans() {
   for (const auto& pending_span : span_buffer_) {
     (*scope_span->add_spans()) = pending_span;
   }
-  tracing_stats_.spans_sent_.add(span_buffer_.size());
   if (exporter_) {
+    tracing_stats_.spans_sent_.add(span_buffer_.size());
     if (!exporter_->log(request)) {
       // TODO: should there be any sort of retry or reporting here?
       ENVOY_LOG(trace, "Unsuccessful log request to OpenTelemetry trace collector.");
