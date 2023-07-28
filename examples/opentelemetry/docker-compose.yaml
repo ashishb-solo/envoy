@@ -15,6 +15,7 @@ services:
         condition: service_started
     ports:
     - "${PORT_PROXY:-10000}:10000"
+    - 19000:19000
 
   envoy-1:
     build:
@@ -69,3 +70,15 @@ services:
     command: ["--config=/etc/otel-collector-config.yaml"]
     ports:
     - "${PORT_UI:-55679}:55679"
+    depends_on:
+      echo-server:
+        condition: service_started
+
+  echo-server:
+    image: jmalloc/echo-server
+    environment:
+      LOG_HTTP_BODY: "true"
+      LOG_HTTP_HEADERS: "true"
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -sf http://localhost:8080 || exit 1"]
+
